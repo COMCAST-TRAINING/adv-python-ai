@@ -26,17 +26,18 @@ st.set_page_config(
 st.markdown("""
     <style>
     .main-header {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #1f77b4;
-        text-align: center;
-        margin-bottom: 0.5rem;
+        font-size: 3rem !important;
+        font-weight: bold !important;
+        color: #1f77b4 !important;
+        text-align: center !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.2 !important;
     }
     .sub-header {
-        font-size: 1.2rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 2rem;
+        font-size: 1.2rem !important;
+        color: #666 !important;
+        text-align: center !important;
+        margin-bottom: 2rem !important;
     }
     .prediction-box {
         padding: 2rem;

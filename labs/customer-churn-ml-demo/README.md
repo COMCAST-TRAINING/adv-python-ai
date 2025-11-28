@@ -96,10 +96,35 @@ customer-churn-ml-demo/
 │   ├── cleaning_summary.csv                # Summary of cleaning operations
 │   └── feature_documentation.csv           # Catalog of all features
 │
-├── src/                                     # Source code
+├── src/                                     # Python Scripts (Pipeline)
 │   ├── 01_clean_data.py                    # Data cleaning pipeline
-│   └── 02_feature_engineering.py           # Feature engineering pipeline
+│   ├── 02_feature_engineering.py           # Feature engineering pipeline
+│   ├── 03_exploratory_data_analysis.py     # EDA and visualization generation
+│   ├── 04_model_training_eval.py           # Model training and evaluation
+│   └── 05_hyperparam_tuning.py             # Hyperparameter optimization
 │
+├── notebooks/                               # Jupyter Notebooks (Interactive Learning)
+│   ├── 01_clean_data.ipynb                 # Data cleaning tutorial
+│   ├── 02_feature_engineering.ipynb        # Feature engineering tutorial
+│   ├── 03_exploratory_data_analysis.ipynb  # EDA tutorial
+│   ├── 04_model_training_eval.ipynb        # Model training tutorial
+│   └── 05_hyperparam_tuning.ipynb          # Hyperparameter tuning tutorial
+│
+├── app/                                     # Streamlit Web Application
+│   ├── streamlit_app.py                    # Main app file
+│   ├── README.md                           # App documentation
+│   └── QUICKSTART.md                       # Quick start guide
+│
+├── scripts/                                 # Utility scripts
+│   └── run_app.sh                          # Launch Streamlit app
+│
+├── models/                                  # Trained ML models (generated)
+│   └── churn_model.pkl                     # Serialized trained model
+│
+├── visualizations/                          # Generated plots and charts
+│   └── *.png                               # EDA visualizations
+│
+├── requirements.txt                         # Python dependencies
 └── README.md                                # This file
 ```
 
@@ -107,9 +132,15 @@ customer-churn-ml-demo/
 
 ## 🔄 Pipeline Process
 
-The pipeline consists of **two main stages** that must be run sequentially:
+The project offers **two ways to work**: **Python Scripts** (for automated pipeline) or **Jupyter Notebooks** (for interactive learning).
 
-### Stage 1: Data Cleaning (`01_clean_data.py`)
+### Pipeline Stages
+
+The complete pipeline consists of **five stages** that can be run sequentially:
+
+#### Stage 1: Data Cleaning
+
+**Script**: `src/01_clean_data.py` | **Notebook**: `notebooks/01_clean_data.ipynb`
 
 Transforms raw, messy data into a clean, validated dataset.
 
@@ -130,7 +161,9 @@ Transforms raw, messy data into a clean, validated dataset.
 - Automatic validation checks
 - Summary statistics saved to `cleaning_summary.csv`
 
-### Stage 2: Feature Engineering (`02_feature_engineering.py`)
+#### Stage 2: Feature Engineering
+
+**Script**: `src/02_feature_engineering.py` | **Notebook**: `notebooks/02_feature_engineering.ipynb`
 
 Creates derived features that capture customer behavior patterns and risk indicators.
 
@@ -174,6 +207,56 @@ Creates derived features that capture customer behavior patterns and risk indica
 
 **Total Features Created**: ~35 new derived features
 
+#### Stage 3: Exploratory Data Analysis (EDA)
+
+**Script**: `src/03_exploratory_data_analysis.py` | **Notebook**: `notebooks/03_exploratory_data_analysis.ipynb`
+
+Analyzes data patterns and generates visualizations.
+
+**Analyses Performed**:
+
+- Churn distribution and class balance
+- Feature correlation analysis
+- Top features correlated with churn
+- Distribution plots for key metrics
+- Categorical variable analysis
+
+**Outputs**: PNG visualizations saved to `visualizations/` folder
+
+#### Stage 4: Model Training & Evaluation
+
+**Script**: `src/04_model_training_eval.py` | **Notebook**: `notebooks/04_model_training_eval.ipynb`
+
+Trains and evaluates machine learning models.
+
+**Models Trained**:
+
+- Random Forest Classifier (primary model)
+- Additional models for comparison (Logistic Regression, etc.)
+
+**Evaluation Metrics**:
+
+- Accuracy, Precision, Recall, F1-Score
+- Confusion Matrix
+- ROC-AUC Score
+- Feature Importance Analysis
+
+**Outputs**: Trained model saved to `models/churn_model.pkl`
+
+#### Stage 5: Hyperparameter Tuning
+
+**Script**: `src/05_hyperparam_tuning.py` | **Notebook**: `notebooks/05_hyperparam_tuning.ipynb`
+
+Optimizes model performance through hyperparameter tuning.
+
+**Techniques**:
+
+- Grid Search CV
+- Randomized Search CV
+- Cross-validation for model selection
+
+**Outputs**: Best model parameters and improved model
+
 ---
 
 ## 🚀 Installation
@@ -185,10 +268,10 @@ Creates derived features that capture customer behavior patterns and risk indica
 
 ### Required Libraries
 
-#### Option 1: Using Virtual Environment (Recommended)
+Install all dependencies using the provided requirements file:
 
 ```bash
-# Create virtual environment
+# Create virtual environment (recommended)
 python -m venv .venv
 
 # Activate virtual environment
@@ -197,41 +280,35 @@ source .venv/bin/activate
 # On Windows:
 .venv\Scripts\activate
 
-# Install required packages
-pip install pandas numpy
-```
-
-#### Option 2: Using requirements.txt (if available)
-
-```bash
-# Create virtual environment
-python -m venv .venv
-
-# Activate virtual environment
-# On macOS/Linux:
-source .venv/bin/activate
-# On Windows:
-.venv\Scripts\activate
-
-# Install from requirements file
+# Install all dependencies
 pip install -r requirements.txt
 ```
 
-> **Note**: Remember to activate the virtual environment before running the pipeline scripts.
+**Core Dependencies** (automatically installed):
+
+- `pandas>=2.2.0` - Data manipulation
+- `numpy>=1.26.0` - Numerical operations
+- `scikit-learn>=1.5.0` - Machine learning
+- `matplotlib>=3.9.0` - Plotting
+- `seaborn>=0.13.0` - Statistical visualizations
+- `plotly>=5.24.0` - Interactive charts
+- `joblib>=1.4.0` - Model serialization
+- `streamlit>=1.39.0` - Web application framework
 
 ### Verify Installation
 
 ```bash
 python --version        # Should show Python 3.12+
-python -c "import pandas; print(pandas.__version__)"
-python -c "import numpy; print(numpy.__version__)"
+pip list                # Show all installed packages
 ```
+
+**Optional Dependencies**: See `requirements.txt` for additional packages like XGBoost, LightGBM, SHAP, etc.
 
 ---
 
 ## ▶️ How to Run
 
-### Quick Start
+### Option 1: Python Scripts (Automated Pipeline)
 
 Navigate to the project directory and run the pipeline scripts in order:
 
@@ -239,14 +316,56 @@ Navigate to the project directory and run the pipeline scripts in order:
 # Navigate to project directory
 cd customer-churn-ml-demo
 
-# Step 1: Clean the raw data
+# Run the complete pipeline
 python src/01_clean_data.py
-
-# Step 2: Engineer features from cleaned data
 python src/02_feature_engineering.py
+python src/03_exploratory_data_analysis.py
+python src/04_model_training_eval.py
+python src/05_hyperparam_tuning.py
 ```
 
-### Step-by-Step Instructions
+### Option 2: Jupyter Notebooks (Interactive Learning)
+
+Open and run notebooks sequentially for detailed explanations:
+
+```bash
+# Start Jupyter
+jupyter notebook
+
+# Or use VS Code with Jupyter extension
+# Open: notebooks/01_clean_data.ipynb
+```
+
+**Notebook Execution Order**:
+
+1. `01_clean_data.ipynb` - Data cleaning
+2. `02_feature_engineering.ipynb` - Feature creation
+3. `03_exploratory_data_analysis.ipynb` - Data exploration
+4. `04_model_training_eval.ipynb` - Model training
+5. `05_hyperparam_tuning.ipynb` - Model optimization
+
+### Option 3: Streamlit Web Application
+
+Launch the interactive prediction app:
+
+```bash
+# Method 1: Using Streamlit directly
+streamlit run app/streamlit_app.py
+
+# Method 2: Using the provided script
+./scripts/run_app.sh
+```
+
+The app will open at `http://localhost:8501` with features:
+
+- 🎯 Interactive customer churn prediction
+- 📊 Visual risk assessment gauges
+- 💡 Actionable retention recommendations
+- 📈 Feature importance analysis
+
+**Note**: Run the complete pipeline first to generate the required model file (`models/churn_model.pkl`).
+
+### Detailed Step-by-Step Instructions
 
 #### Step 1: Data Cleaning
 
@@ -302,6 +421,48 @@ CLEANING COMPLETE
 ```
 
 **Duration**: ~1-2 seconds
+
+#### Step 3: Exploratory Data Analysis
+
+```bash
+python src/03_exploratory_data_analysis.py
+```
+
+**What it does**:
+
+- Reads `data/customer_churn_featured.csv`
+- Generates visualizations and statistical analysis
+- Saves plots to `visualizations/` folder
+
+**Duration**: ~2-3 seconds
+
+#### Step 4: Model Training
+
+```bash
+python src/04_model_training_eval.py
+```
+
+**What it does**:
+
+- Trains Random Forest classifier
+- Evaluates model performance
+- Saves trained model to `models/churn_model.pkl`
+
+**Duration**: ~3-5 seconds
+
+#### Step 5: Hyperparameter Tuning
+
+```bash
+python src/05_hyperparam_tuning.py
+```
+
+**What it does**:
+
+- Performs grid search for optimal parameters
+- Cross-validates model performance
+- Updates model with best parameters
+
+**Duration**: ~10-30 seconds (depending on search space)
 
 #### Step 2: Feature Engineering
 
@@ -359,13 +520,11 @@ If running from a different directory:
 
 ```bash
 # Using absolute paths
-python /Users/saravana/Training2/adv-python-ai/labs/customer-churn-ml-demo/src/01_clean_data.py
-python /Users/saravana/Training2/adv-python-ai/labs/customer-churn-ml-demo/src/02_feature_engineering.py
+python /path/to/customer-churn-ml-demo/src/01_clean_data.py
 
 # Or change directory first
-cd /Users/saravana/Training2/adv-python-ai/labs/customer-churn-ml-demo
+cd /path/to/customer-churn-ml-demo
 python src/01_clean_data.py
-python src/02_feature_engineering.py
 ```
 
 ---
@@ -374,7 +533,9 @@ python src/02_feature_engineering.py
 
 After running the complete pipeline, you will find:
 
-### 1. `customer_churn_cleaned.csv`
+### Data Files
+
+#### 1. `customer_churn_cleaned.csv`
 
 Clean, validated dataset ready for analysis.
 
@@ -382,7 +543,7 @@ Clean, validated dataset ready for analysis.
 - **Features**: 21 (original columns)
 - **Quality**: No missing values, no duplicates, all ranges validated
 
-### 2. `customer_churn_featured.csv`
+#### 2. `customer_churn_featured.csv`
 
 Machine learning-ready dataset with engineered features.
 
@@ -390,7 +551,7 @@ Machine learning-ready dataset with engineered features.
 - **Features**: ~56 (21 original + 35 engineered)
 - **Ready for**: Model training, exploratory analysis, predictions
 
-### 3. `cleaning_summary.csv`
+#### 3. `cleaning_summary.csv`
 
 Summary statistics of the cleaning process.
 
@@ -402,7 +563,7 @@ Summary statistics of the cleaning process.
 | Initial Missing Values | ~45   |
 | Final Missing Values   | 0     |
 
-### 4. `feature_documentation.csv`
+#### 4. `feature_documentation.csv`
 
 Catalog of all features with metadata.
 
@@ -411,6 +572,28 @@ Catalog of all features with metadata.
 | customer_id         | Original   | object    | 0       | 104    |
 | monthly_value_ratio | Engineered | float64   | 0       | 104    |
 | ...                 | ...        | ...       | ...     | ...    |
+
+### Model Files
+
+#### 5. `models/churn_model.pkl`
+
+Serialized trained Random Forest model.
+
+- **Algorithm**: Random Forest Classifier
+- **Input Features**: ~56 features (after encoding)
+- **Output**: Churn probability (0-1)
+- **Usage**: Load with `joblib.load()` for predictions
+
+### Visualization Files
+
+#### 6. `visualizations/*.png`
+
+Generated plots from EDA:
+
+- Churn distribution charts
+- Correlation heatmaps
+- Feature importance plots
+- Distribution histograms
 
 ---
 
@@ -460,9 +643,40 @@ The pipeline automatically:
 
 ## 🔮 Next Steps
 
-After completing this pipeline, you can:
+After completing the pipeline, you can:
 
-### 1. Exploratory Data Analysis (EDA)
+### 1. Use the Streamlit App
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+**Features**:
+
+- Interactive customer prediction interface
+- Visual risk assessment
+- Feature importance display
+- Retention recommendations
+
+### 2. Explore Data with Notebooks
+
+Open the interactive notebooks for detailed exploration:
+
+- `notebooks/03_exploratory_data_analysis.ipynb` - Comprehensive EDA
+- `notebooks/04_model_training_eval.ipynb` - Model insights
+- `notebooks/05_hyperparam_tuning.ipynb` - Optimization analysis
+
+### 3. Extend the Pipeline
+
+Add new capabilities:
+
+- Implement additional ML algorithms (XGBoost, Neural Networks)
+- Add SHAP for model explainability
+- Create custom feature engineering rules
+- Build REST API for predictions
+- Deploy to cloud (AWS, Azure, GCP)
+
+### 4. Advanced Analysis
 
 ```python
 import pandas as pd
@@ -483,83 +697,63 @@ sns.heatmap(df.corr(), cmap='coolwarm', center=0)
 plt.show()
 ```
 
-### 2. Train Machine Learning Models
+### 5. Load and Use Trained Model
 
 ```python
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
+import joblib
+import pandas as pd
 
-# Prepare data
-X = df.drop(['customer_id', 'churned'], axis=1)
-# Convert categorical to numeric (one-hot encoding)
-X = pd.get_dummies(X, drop_first=True)
-y = df['churned']
+# Load the trained model
+model = joblib.load('models/churn_model.pkl')
 
-# Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Load new customer data
+new_customers = pd.read_csv('data/customer_churn_featured.csv')
 
-# Train model
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
+# Make predictions
+X = new_customers.drop(['customer_id', 'churned'], axis=1)
+X = pd.get_dummies(X, drop_first=True)  # One-hot encode categoricals
 
-# Evaluate
-y_pred = model.predict(X_test)
-print(classification_report(y_test, y_pred))
+predictions = model.predict(X)
+probabilities = model.predict_proba(X)[:, 1]
+
+# Show high-risk customers
+new_customers['churn_probability'] = probabilities
+high_risk = new_customers[probabilities > 0.7]
+print(f"High-risk customers: {len(high_risk)}")
 ```
 
-### 3. Model Comparison
+### 6. Batch Predictions
 
-Try multiple algorithms:
-
-- Logistic Regression
-- Decision Trees
-- Random Forest
-- Gradient Boosting (XGBoost, LightGBM)
-- Neural Networks
-
-### 4. Hyperparameter Tuning
+Create a prediction pipeline for new data:
 
 ```python
-from sklearn.model_selection import GridSearchCV
+def predict_churn_batch(customer_data_path):
+    """Predict churn for a batch of customers"""
+    import joblib
+    import pandas as pd
 
-param_grid = {
-    'n_estimators': [50, 100, 200],
-    'max_depth': [5, 10, 15],
-    'min_samples_split': [2, 5, 10]
-}
+    # Load model
+    model = joblib.load('models/churn_model.pkl')
 
-grid_search = GridSearchCV(RandomForestClassifier(), param_grid, cv=5)
-grid_search.fit(X_train, y_train)
-print(f"Best parameters: {grid_search.best_params_}")
-```
+    # Load and prepare data
+    df = pd.read_csv(customer_data_path)
+    X = df.drop(['customer_id', 'churned'], axis=1, errors='ignore')
+    X = pd.get_dummies(X, drop_first=True)
 
-### 5. Feature Importance Analysis
-
-```python
-# Get feature importance from trained model
-feature_importance = pd.DataFrame({
-    'feature': X.columns,
-    'importance': model.feature_importances_
-}).sort_values('importance', ascending=False)
-
-print(feature_importance.head(15))
-```
-
-### 6. Deploy Predictions
-
-Create a prediction pipeline:
-
-```python
-def predict_churn(customer_data):
-    """Predict churn probability for new customers"""
-    # Clean data
-    cleaned = clean_pipeline(customer_data)
-    # Engineer features
-    featured = feature_pipeline(cleaned)
     # Predict
-    prediction = model.predict_proba(featured)
-    return prediction[:, 1]  # Probability of churn
+    predictions = model.predict_proba(X)[:, 1]
+
+    # Add to dataframe
+    df['churn_risk'] = predictions
+    df['risk_category'] = pd.cut(predictions,
+                                   bins=[0, 0.3, 0.7, 1.0],
+                                   labels=['Low', 'Medium', 'High'])
+
+    return df
+
+# Use it
+results = predict_churn_batch('data/customer_churn_featured.csv')
+print(results[['customer_id', 'churn_risk', 'risk_category']].head())
 ```
 
 ---
@@ -567,6 +761,12 @@ def predict_churn(customer_data):
 ## 📚 Learning Objectives
 
 This project demonstrates:
+
+✅ **Complete ML Pipeline**
+
+- End-to-end workflow from raw data to deployed model
+- Sequential processing stages
+- Reproducible data science workflow
 
 ✅ **Data Cleaning Best Practices**
 
@@ -582,19 +782,34 @@ This project demonstrates:
 - Engineering domain-specific metrics
 - Feature validation
 
+✅ **Machine Learning Development**
+
+- Model training and evaluation
+- Hyperparameter tuning
+- Feature importance analysis
+- Model serialization and deployment
+
+✅ **Interactive Development**
+
+- Jupyter notebooks for exploration
+- Python scripts for automation
+- Web application for end-users
+- Visualization and reporting
+
 ✅ **Python Programming**
 
 - Pandas data manipulation
 - NumPy numerical operations
+- Scikit-learn ML workflows
+- Streamlit web development
 - Modular code organization
+
+✅ **Best Practices**
+
+- Virtual environment management
+- Requirements management
+- Project structure organization
 - Documentation and logging
-
-✅ **Machine Learning Pipeline**
-
-- Sequential processing stages
-- Data validation and quality checks
-- Reproducible workflows
-- Output documentation
 
 ---
 
@@ -602,11 +817,14 @@ This project demonstrates:
 
 To extend this project:
 
-1. Add new data sources (customer feedback, web analytics)
-2. Implement additional feature engineering techniques
-3. Add model training scripts
-4. Create visualization dashboards
-5. Implement automated ML (AutoML) pipelines
+1. **Add new features**: Implement additional feature engineering logic in `src/02_feature_engineering.py`
+2. **Try new models**: Add algorithms in `src/04_model_training_eval.py`
+3. **Enhance visualizations**: Extend EDA in `src/03_exploratory_data_analysis.py`
+4. **Improve the app**: Add features to `app/streamlit_app.py`
+5. **Create tutorials**: Add notebooks to `notebooks/` folder
+6. **Add data sources**: Integrate customer feedback, web analytics, etc.
+7. **Implement AutoML**: Add automated model selection pipelines
+8. **Build APIs**: Create REST/GraphQL endpoints for predictions
 
 ---
 
@@ -627,10 +845,18 @@ Date: November 2025
 
 For questions or issues:
 
-1. Review the console output for detailed error messages
-2. Check that all required libraries are installed
-3. Verify file paths are correct
-4. Ensure Python 3.8+ is being used
+1. **Check the output**: Review console output for detailed error messages
+2. **Verify installation**: Ensure all dependencies are installed (`pip list`)
+3. **Check paths**: Verify file paths are correct and data files exist
+4. **Python version**: Ensure Python 3.12+ is being used
+5. **Documentation**: Read `app/README.md` for Streamlit app help
+6. **Notebooks**: Use Jupyter notebooks for step-by-step debugging
+
+**Common Issues**:
+
+- **Model not found**: Run `python src/04_model_training_eval.py` to generate model
+- **Import errors**: Run `pip install -r requirements.txt`
+- **File not found**: Ensure you're running from the project root directory
 
 ---
 

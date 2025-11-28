@@ -9,7 +9,7 @@
 cd customer-churn-ml-demo
 
 # Install deployment requirements
-pip install -r requirements-deploy.txt
+pip install -r requirements.txt
 ```
 
 ### 2. Run the App
@@ -17,6 +17,9 @@ pip install -r requirements-deploy.txt
 ```bash
 # From the project root directory
 streamlit run app/streamlit_app.py
+
+# Alternatively, use the provided script
+./scripts/run_app.sh
 ```
 
 The app will open automatically in your browser at `http://localhost:8501`
